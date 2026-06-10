@@ -91,12 +91,13 @@ wf_xgb <- workflow() |>
   add_recipe(rec_xgb) |>
   add_model(xgb_spec)
 
+grid_rules <- control_grid(parallel_over = "everything", save_workflow = TRUE)
 
 tune_res_xgb <- tune_grid(
   wf_xgb,
   xgb_folds,
   grid = 50,
-  control = control_grid(parallel_over = "everything"),
+  control = grid_rules,
   metrics = metric_set(rmse)
 )
 
@@ -106,8 +107,11 @@ tune_res_xgb_nu <- tune_grid(
   wf_xgb,
   nu_folds,
   grid = 50,
-  control = control_grid(parallel_over = "everything"),
+  control = grid_rules,
   metrics = metric_set(rmse)
 )
 
 tune_res_xgb_nu |> show_best(metric = "rmse")
+
+xgb_fit <- fit_best(tune_res_xgb, metric = "rmse", verbose = TRUE)
+xgb_fit_nu <- fit_best(tune_res_xgb_nu, metric = "rmse", verbose = TRUE)
