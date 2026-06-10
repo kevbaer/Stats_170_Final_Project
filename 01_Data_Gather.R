@@ -1,6 +1,10 @@
 library(tidyverse)
 library(anyflights)
 library(ggview)
+library(timetk)
+library(modeltime)
+library(tidymodels)
+library(fastDummies)
 
 # for(y in 2018:2025){
 #   get_flights("LAX", year = y, dir = "99_data")
