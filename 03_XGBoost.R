@@ -61,6 +61,16 @@ xgb_folds <- time_series_cv(
   slice_limit = 25
 )
 
+nu_folds <- sliding_period(
+  plain_train_xgb,
+  ymd,
+  period = "month",
+  lookback = Inf,
+  assess_start = 1,
+  assess_stop = 6,
+  skip = 32
+)
+
 plain_train_xgb <- plain_train_xgb |>
   select(-ymd)
 
@@ -89,3 +99,15 @@ tune_res_xgb <- tune_grid(
   control = control_grid(parallel_over = "everything"),
   metrics = metric_set(rmse)
 )
+
+tune_res_xgb |> show_best(metric = "rmse")
+
+tune_res_xgb_nu <- tune_grid(
+  wf_xgb,
+  nu_folds,
+  grid = 50,
+  control = control_grid(parallel_over = "everything"),
+  metrics = metric_set(rmse)
+)
+
+tune_res_xgb_nu |> show_best(metric = "rmse")
