@@ -61,3 +61,51 @@ plot_results <- results |>
     size = 5
   ) +
   canvas(width = 10, height = 6)
+
+labs <- c(
+  "truth" = "Truth",
+  "lagged_xgb_independent_pred" = "Lagged XGB (Distinct)",
+  "xgb_independent_pred" = "XGB (Distinct)",
+  "xgb_overlap_pred" = "XGB (Overlap)",
+  "lagged_xgb_overlap_pred" = "Lagged XGB (Overlap)",
+  "prophet_pred" = "Prophet",
+  "arima_pred" = "Auto-Arima",
+  "ets_pred" = "ETS"
+)
+
+plot_prediction <- pred_df |>
+  pivot_longer(
+    cols = -ymd,
+    values_to = "estimate",
+    names_to = "model"
+  ) |>
+  mutate(
+    model = factor(
+      model,
+      levels = c(
+        "truth",
+        "lagged_xgb_independent_pred",
+        "xgb_independent_pred",
+        "xgb_overlap_pred",
+        "lagged_xgb_overlap_pred",
+        "prophet_pred",
+        "arima_pred",
+        "ets_pred"
+      )
+    )
+  ) |>
+  ggplot() +
+  aes(x = ymd, y = estimate) +
+  geom_line(linewidth = 0.5, color = "#002c55") +
+  facet_wrap2(
+    ~model,
+    nrow = 2,
+    strip = strip_themed(
+      background_x = elem_list_rect(fill = c("#8ee7af", rep("#fecdd4", 7)))
+    ),
+    labeller = labeller(model = labs)
+  ) +
+  canvas(width = 10, height = 6) +
+  labs(title = "Model Prediction Analysis", x = "Date", y = "Estimate") +
+  theme(strip.text = element_text(size = 16)) +
+  theme(panel.spacing.x = unit(.85, "lines"))
