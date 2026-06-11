@@ -25,7 +25,6 @@ xgb_preds_independent_folds <- plain_test_xgb |>
   bind_cols(predict(xgb_fit_nu, new_data = plain_test_xgb)) |>
   select(ymd, xgb_independent_pred = .pred)
 
-
 lagged_xgb_preds_overlap_folds <- rep(NA, 184)
 lag_test_xgb_updating <- lag_test_xgb
 
@@ -58,7 +57,6 @@ for (i in 1:184) {
   ] <- lagged_xgb_preds_independent_folds[i] |>
     as.integer()
 }
-
 
 pred_df <- test_set |>
   rename(truth = flights_per_day) |>

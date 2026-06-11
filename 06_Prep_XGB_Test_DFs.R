@@ -65,8 +65,8 @@ plain_test_xgb <- test_set |>
   select(-c(year, half, quarter_3, month.lbl_August, wday.lbl_Friday))
 
 lag_test_xgb <- plain_train_xgb |>
+  mutate(ymd = as_datetime(index) |> as_date(), .before = 1) |>
   bind_rows(plain_test_xgb) |>
-  left_join(train_set, by = "ymd") |>
   arrange(ymd) |>
   mutate(lag_1_day = lag_vec(flights_per_day, lag = 1)) |>
   mutate(lag_1_year = lag_vec(flights_per_day, lag = 365)) |>
