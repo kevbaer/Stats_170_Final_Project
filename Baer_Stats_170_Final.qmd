@@ -1,0 +1,30 @@
+---
+title: "Adapting XGBoost for Time Series Use"
+subtitle: "Stats 170 Final Project"
+date: "June 11, 2026"
+author: "Kevin Baer"
+format: pdf
+editor: visual
+---
+
+\newpage
+
+# 1. Introduction
+
+Life is, at its core, about the future. Some may disagree but the past and present derive their power from the ability to influence the future.
+
+I share this philosophy to lay out a foundation for my personal interest in prediction (or as many in the time series community like to refer to as "Forecasting"). Predictive modeling empowers us to make better decisions for the future in all kinds of disciplines, from medicine to business to sports to weather. It also helps that prediction is worth a lot of money. Prediction markets are all the rage right now; Kalshi is currently valued at 23.7 billion dollars.[^1] Sports betting, financial trading, and insurance are some of the biggest industries in the world and all revolve around the ability to predict the future better than competitors. So it follows that the best prediction algorithms (and people to implement them) are worth a lot of money too.
+
+[^1]: <https://finance.yahoo.com/quote/KLSH.PVT/>
+
+For example, in this new age of AI, some scientists in Germany at a company called Prior Labs started creating an LLM for predicting tabular data. TabPFN (or Tabular Prior-Data Fitted Network) uses synthetically created tabular datasets to serve as a learning corpus for more accurate prediction on the dataset you provide. Based on my understanding of the "public" sphere of predictive models in existence, it is the current state of the art. Their current technical report shows their models at the top, beating all sorts of classical and ensembled machine learning methods.[^2] One may note that I put public in quotes, indeed, TabPFN is only publicly available under license which does not allow for commercial use. You can, of course, pay them to let you use it for commercial use. Furthermore, Prior Labs was acquired in May of 2026 by SAP, which Forbes ranks as the 164th biggest company in the world (and 10th biggest software company).[^3][^4] This acquisition, which comes with a guaranteed 1 billion euro investment, was for an undisclosed amount of money. Suffice to say, we're talking about a very valuable area of research and investment.
+
+[^2]: <https://arxiv.org/pdf/2605.13986>
+
+[^3]: <https://priorlabs.ai/blog-posts/priorlabs-next-chapter>
+
+[^4]: <https://www.forbes.com/lists/global2000/>
+
+As a student, being well-versed and comfortable using and discussing these models opens lots of doors. For example, I finished in second place in a hackathon hosted by the Cincinnati Reds (a Major League Baseball team) in February 2025.[^5] Ten months later, they offered me an internship and referenced my hackathon performance as part of what elevated me over other candidates!
+
+[^5]: <https://www.kaggle.com/code/kevinbaer/predicting-future-playing-time>
