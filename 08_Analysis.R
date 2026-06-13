@@ -62,7 +62,7 @@ plot_results <- results |>
   ) +
   canvas(width = 10, height = 6)
 
-labs <- c(
+labs2 <- c(
   "truth" = "Truth",
   "lagged_xgb_independent_pred" = "Lagged XGB (Distinct)",
   "xgb_independent_pred" = "XGB (Distinct)",
@@ -103,7 +103,7 @@ plot_prediction <- pred_df |>
     strip = strip_themed(
       background_x = elem_list_rect(fill = c("#8ee7af", rep("#fecdd4", 7)))
     ),
-    labeller = labeller(model = labs)
+    labeller = labeller(model = labs2)
   ) +
   canvas(width = 10, height = 6) +
   labs(title = "Model Prediction Analysis", x = "Date", y = "Estimate") +

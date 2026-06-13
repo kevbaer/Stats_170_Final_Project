@@ -25,6 +25,46 @@ For example, in this new age of AI, some scientists in Germany at a company call
 
 [^4]: <https://www.forbes.com/lists/global2000/>
 
-As a student, being well-versed and comfortable using and discussing these models opens lots of doors. For example, I finished in second place in a hackathon hosted by the Cincinnati Reds (a Major League Baseball team) in February 2025.[^5] Ten months later, they offered me an internship and referenced my hackathon performance as part of what elevated me over other candidates!
+As a student, being well-versed and comfortable using and discussing these models opens lots of doors. For example, I finished in second place[^5] in a hackathon hosted by the Cincinnati Reds (a Major League Baseball team) in February 2025.[^6] Ten months later, they offered me an internship and referenced my hackathon performance as part of what elevated me over other candidates! There are classes offered here at UCLA that cover these topics, my understanding (I haven't taken it yet) is that Stats 101c is the Statistics version, though I've taken CS m146 and CSm148 which also cover these methods fairly in depth as well.
 
-[^5]: <https://www.kaggle.com/code/kevinbaer/predicting-future-playing-time>
+[^5]: I personally feel that there was some cheating that occurred in this competition, but that's a story for another time.
+
+[^6]: <https://www.kaggle.com/code/kevinbaer/predicting-future-playing-time>
+
+What I'm referring to is the set of algorithms used for predictive modeling, also frequently called machine learning. The simplest model is typically linear regression and you build up throughout the quarter learning about various parametric and non-parametric models. In most classes I've seen, they stop with either the class of Random Forest / XGBoost, or cover Neural Networks. Some of these classes end with a Kaggle competition, similar to the Reds Hackathon referenced above. But, all of these classes focus on tabular data. And here comes the rub: that doesn't help you when you get to time series datasets.
+
+I'm not the first person to attempt to use XGBoost models for Time Series. This is a well known plan used by big companies and researchers all around the world. Indeed, as I was conducting research for this paper[^7] I stumbled across an article about Chronos2, Amazon's fancy new Time Series Foundation Model (TSFM), which currently holds the top score on fev-bench, a time series benchmark leaderboard.[^8][^9][^10] The article, written by a machine learning engineer at the Belgian software company ML6, compares Chronos2 to a production-grade, tuned XGBoost pipeline.[^11] The XGBoost model proved victorious.
+
+[^7]: I was actually just scrolling on GitHub, but if it works, it works.
+
+[^8]: <https://www.amazon.science/blog/introducing-chronos-2-from-univariate-to-universal-forecasting>
+
+[^9]: <https://huggingface.co/spaces/autogluon/fev-bench>
+
+[^10]: <https://huggingface.co/spaces/autogluon/fev-bench>
+
+[^11]: <https://www.ml6.eu/en/blog/chronos-2-meets-the-grid-forecasting-system-imbalance-with-a-time-series-foundation-model>
+
+I love XGBoost models.[^12] I often use them for my projects without even considering alternative options, I just have that much faith. So it only felt reasonable to see how XGBoost compares to the methods we learned about in class, and going through the work to figure out the best ways to handle problems that arise throughout.
+
+[^12]: Just check out my GitHub ([github.com/kevbaer](github.com/kevbaer)).
+
+# 2. Data Breakdown
+
+For this project, I decided that I was interested in something related to airplane flight data. As an out of state student, this issue is near to my heart, and the almost one billion American passengers in the past year. Also, one of the most famous datasets in R, `nycflights13`, is about plane flights. Thankfully, the `anyflights` package allows for the collection of data about other airports, from which I downloaded data on all flights departing from LAX (Los Angeles International Airport). The original source of this data is the Bureau of Transportation Statistics.[^13] The variable of interest for my analysis is the number of departing flights, measured per day. Below, I plot all data from 2018 through 2025:
+
+[^13]: [bts.gov](https://www.bts.gov/)
+
+![Plot of Full Dataset: 2018-2025](98_images/plot_over_time.png){fig-align="center" width="600"}
+
+One standout is the harrowing impacts of the Covid-19 pandemic, which dropped flights to as low as one-third their previous average. Indeed, it appears from the data shown here that we haven't even recovered to that 2018-2020 average. For my analysis, I chose to start the dataset when the data appears to flattened back out, July 1st of 2021. So, each model is given a training quota of 4 years of data, conveniently with one leap day for a total number of 1461 rows. You can see each of those data points between the two dashed red lines in the above figure. After whatever training procedures each model works best with, there will be a separate unseen test dataset for the model's predictions to be compared to. This consists of 6 months worth of data, the second half of 2025, July 1st to December 31st (184 rows) and is represented in the figure by the points to the right of the second red line.
+
+# 3. Defining the Problem
+
+What exactly am I setting out to accomplish? I want to compare some of the time series methods we learned about (as well as others that score highly on the `modeltime` introductory vignette[^14]) to the best XGBoost model that I can create relatively quickly (i.e. in the span of this project's real world duration but also in the time it takes to run the code itself). I will measure performance on the held-out test set using the RMSE (Root Mean Squared Error) metric,[^15] which is a frequent choice for its good penalization for larger mistakes[^16] but also recalibration to the same units as the data for ease of interpretability.
+
+[^14]: <https://business-science.github.io/modeltime/articles/getting-started-with-modeltime.html>
+
+[^15]: <https://yardstick.tidymodels.org/reference/rmse.html>
+
+[^16]: Larger mistakes are typically considered more costly than a series of small mistakes adding up to an equivalent value.

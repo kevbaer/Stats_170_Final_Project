@@ -5,7 +5,7 @@ flights_per_day <- full_flight_df |>
   mutate(ymd = make_date(year = year, month = month, day = day), .before = 1) |>
   select(-c(year, month, day))
 
-plot_1 <- flights_per_day |>
+plot_over_time <- flights_per_day |>
   ggplot() +
   aes(x = ymd, y = flights_per_day) +
   geom_line(color = "#5c4cbf") +
