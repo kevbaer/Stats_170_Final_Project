@@ -7,6 +7,7 @@ library(tidymodels)
 library(fastDummies)
 library(ggtext)
 library(ggh4x)
+library(DALEXtra)
 
 # for(y in 2018:2025){
 #   get_flights("LAX", year = y, dir = "99_data")
